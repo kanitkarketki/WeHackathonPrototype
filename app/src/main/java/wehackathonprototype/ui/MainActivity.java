@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String ZIP_CODE = "97007";
     private static final String VIDEO = "https://www.youtube.com/watch?v=Y_iCIISngdI";
-    private static final String HACKATHON_URL = "https://wecode-nov2016s.splashthat.com/#settings";
+    private static final String HACKATHON_URL = "https://foster-connections.herokuapp.com/";
     public static final String SW_2ND_AVE_PORTLAND_OR = "308 SW 2nd Ave., Portland, OR";
 
 
@@ -36,27 +36,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        Fragment fragment = WebviewFragment.newInstance(getResources().getString(R.string.webview_title), HACKATHON_URL);
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flContent, fragment);
+            ft.commit();
+        }
     }
 
     @Override
@@ -106,14 +92,6 @@ public class MainActivity extends AppCompatActivity
             fragment = MyMapFragment.newInstance(SW_2ND_AVE_PORTLAND_OR);
         } else if (id == R.id.nav_information) {
             fragment = WebviewFragment.newInstance(getResources().getString(R.string.webview_title), HACKATHON_URL);
-        } else if (id == R.id.nav_weather) {
-            fragment = WeatherFragment.newInstance(ZIP_CODE);
-        } else if (id == R.id.nav_video) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(VIDEO)));
-        } else if (id == R.id.nav_share) {
-            //TODO:  Add your own code here
-        } else if (id == R.id.nav_send) {
-            //TODO:  Add your own code here
         }
 
         if (fragment != null) {
